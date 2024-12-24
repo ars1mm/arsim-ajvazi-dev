@@ -13,7 +13,11 @@ const MACOS_COLORS = {
   suggestion: '#666666'
 };
 
-const AVAILABLE_DIRECTORIES = {
+interface DirectoryMap {
+  [key: string]: string;
+}
+
+const AVAILABLE_DIRECTORIES: DirectoryMap = {
   'about': '#about-section',
   'projects': '#projects-section',
   'skills': '#skills-section',
