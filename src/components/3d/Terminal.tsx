@@ -1,162 +1,402 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { RoundedBox, Text, OrbitControls, Circle } from '@react-three/drei';
+import * as THREE from 'three';
+import ContactModal from '../modals/ContactModal';
+
+const MACOS_COLORS = {
+  background: '#1E1E1E',
+  text: '#FFFFFF',
+  red: '#FF5F56',
+  yellow: '#FFBD2E',
+  green: '#27C93F',
+  suggestion: '#666666'
+};
+
+const AVAILABLE_DIRECTORIES = {
+  'about': '#about-section',
+  'projects': '#projects-section',
+  'skills': '#skills-section',
+  'contact': '#contact-section',
+  'home': '#hero-section'
+};
+
+const AVAILABLE_FILES = {
+  'contact-me': 'Contact form',
+};
 
 interface Command {
   input: string;
   output: string;
 }
 
-const AVAILABLE_COMMANDS = {
-  'Go-ToProjects': 'Navigating to Projects section...',
-  'Show-Skills': `My Skills:
-• Frontend: React, Next.js, TypeScript, Tailwind CSS
-• Backend: Node.js, Express, PostgreSQL
-• Tools: Git, Docker, AWS
-• Languages: JavaScript, Python, SQL`,
-  'Show-Experience': `Work Experience:
-• Senior Frontend Developer at TechCorp (2022-Present)
-• Full Stack Developer at StartupX (2020-2022)
-• Software Engineer at CodeCo (2018-2020)`,
-  'Contact-Me': `Let's Connect!
-• Email: arsim.ajvazi@example.com
-• LinkedIn: linkedin.com/in/arsim-ajvazi
-• GitHub: github.com/arsim-ajvazi`,
-  'Download-CV': 'Initiating CV download...',
-  'Show-Projects': `Featured Projects:
-• E-commerce Platform - Next.js, Stripe, PostgreSQL
-• AI Chat Application - OpenAI API, React, Node.js
-• Portfolio Website - React Three Fiber, TypeScript
-• Task Management Tool - MERN Stack, Redux`,
-  'Help': `Available commands:
-• Go-ToProjects - View my project portfolio
-• Show-Skills - Display my technical skills
-• Show-Experience - View my work experience
-• Contact-Me - Get my contact information
-• Download-CV - Download my resume
-• Show-Projects - See my featured projects
-• Clear - Clear the terminal screen
-• Help - Show this help message`
+const COMMANDS = {
+  HELP: {
+    name: 'help',
+    description: 'List all available commands'
+  },
+  CD: {
+    name: 'cd',
+    description: 'Navigate to a section (usage: cd <section>)'
+  },
+  CLEAR: {
+    name: 'clear',
+    description: 'Clear the terminal screen'
+  },
+  NVIM: {
+    name: 'nvim',
+    description: 'Open file in editor (usage: nvim contact-me)'
+  }
 };
 
-const Terminal = () => {
+const getHelpText = () => {
+  const commandsList = Object.values(COMMANDS)
+    .map(cmd => `${cmd.name}\t\t${cmd.description}`)
+    .join('\n');
+  
+  const sectionsText = `\nAvailable sections:\n${Object.keys(AVAILABLE_DIRECTORIES)
+    .map(dir => `  - ${dir}`)
+    .join('\n')}`;
+
+  return `Available commands:\n${commandsList}${sectionsText}`;
+};
+
+const WindowControls = () => {
+  return (
+    <group position={[-2.7, 1.8, 0.11]}>
+      {/* Close button */}
+      <Circle args={[0.08]} position={[0, 0, 0]}>
+        <meshBasicMaterial color={MACOS_COLORS.red} />
+      </Circle>
+      {/* Minimize button */}
+      <Circle args={[0.08]} position={[0.2, 0, 0]}>
+        <meshBasicMaterial color={MACOS_COLORS.yellow} />
+      </Circle>
+      {/* Maximize button */}
+      <Circle args={[0.08]} position={[0.4, 0, 0]}>
+        <meshBasicMaterial color={MACOS_COLORS.green} />
+      </Circle>
+    </group>
+  );
+};
+
+const TerminalScreen: React.FC<{ 
+  commands: Command[], 
+  currentInput: string,
+  suggestion: string 
+}> = ({ commands, currentInput, suggestion }) => {
+  const meshRef = useRef<THREE.Mesh>(null!);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+    }
+  });
+
+  return (
+    <RoundedBox 
+      ref={meshRef}
+      args={[6, 4, 0.2]} 
+      radius={0.15} 
+      smoothness={8}
+      creaseAngle={0.4}
+    >
+      <meshStandardMaterial 
+        color={MACOS_COLORS.background} 
+        opacity={0.95} 
+        transparent 
+        roughness={0.2}
+        metalness={0.1}
+      />
+      
+      <WindowControls />
+
+      <group position={[0, 0, 0.11]}>
+        {/* Current input with suggestion */}
+        <Text
+          position={[-2.7, -1.7, 0]}
+          fontSize={0.15}
+          color={MACOS_COLORS.text}
+          anchorX="left"
+          anchorY="middle"
+          maxWidth={5}
+        >
+          {`arsim-ajvazi@portfolio % ${currentInput}`}
+        </Text>
+        {suggestion && (
+          <Text
+            position={[-2.7, -1.7, 0]}
+            fontSize={0.15}
+            color={MACOS_COLORS.suggestion}
+            anchorX="left"
+            anchorY="middle"
+            maxWidth={5}
+          >
+            {`arsim-ajvazi@portfolio % ${currentInput.startsWith('cd ') ? 'cd ' : 'nvim '} ${suggestion}`}
+          </Text>
+        )}
+
+        {/* Previous commands */}
+        {commands.slice(-5).map((cmd, index) => (
+          <group key={index} position={[0, 1.5 - (index * 0.3), 0]}>
+            <Text
+              position={[-2.7, 0, 0]}
+              fontSize={0.15}
+              color={MACOS_COLORS.text}
+              anchorX="left"
+              anchorY="middle"
+              maxWidth={5}
+            >
+              {`arsim-ajvazi@portfolio % ${cmd.input}`}
+            </Text>
+            {cmd.output.split('\n').map((line, lineIndex) => (
+              <Text
+                key={lineIndex}
+                position={[-2.7, -0.15 - (lineIndex * 0.15), 0]}
+                fontSize={0.12}
+                color={MACOS_COLORS.text}
+                anchorX="left"
+                anchorY="middle"
+                maxWidth={5}
+              >
+                {line}
+              </Text>
+            ))}
+          </group>
+        ))}
+      </group>
+    </RoundedBox>
+  );
+};
+
+const Terminal: React.FC = () => {
   const [commands, setCommands] = useState<Command[]>([]);
   const [currentInput, setCurrentInput] = useState('');
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [suggestion, setSuggestion] = useState('');
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  const processCommand = (cmd: string) => {
-    const command = cmd.trim();
-    
-    if (command === '') return;
-    
-    const output = AVAILABLE_COMMANDS[command as keyof typeof AVAILABLE_COMMANDS] || `Command not found: ${command}. Type 'Help' for available commands.`;
-    
-    setCommands(prev => [...prev, { input: command, output }]);
-    setCommandHistory(prev => [...prev, command]);
-    setHistoryIndex(-1);
+  const scrollToSection = (sectionId: string) => {
+    const element = document.querySelector(sectionId);
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-    if (command.toLowerCase() === 'clear') {
-      setCommands([]);
+      // Smooth scroll with easing
+      const start = window.pageYOffset;
+      const target = offsetPosition;
+      const distance = target - start;
+      const duration = 1000; // ms
+      let startTime: number | null = null;
+
+      const easeInOutCubic = (t: number) => 
+        t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easing = easeInOutCubic(progress);
+        
+        window.scrollTo(0, start + distance * easing);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      };
+
+      requestAnimationFrame(animation);
+      return true;
+    }
+    return false;
+  };
+
+  const handleCommand = (input: string) => {
+    const trimmedInput = input.trim().toLowerCase();
+    
+    // Clear commands for any new command
+    setCommands([]);
+    
+    if (trimmedInput === 'clear') {
+      setCurrentInput('');
+      return;
+    }
+
+    if (trimmedInput === 'help') {
+      setCommands([{
+        input: trimmedInput,
+        output: getHelpText()
+      }]);
+      setCurrentInput('');
+      return;
+    }
+
+    // Handle nvim command
+    if (trimmedInput.startsWith('nvim ')) {
+      const file = trimmedInput.slice(5).toLowerCase();
+      if (file === 'contact-me') {
+        setIsContactModalOpen(true);
+        setCommands([{
+          input: trimmedInput,
+          output: 'Opening contact form...'
+        }]);
+      } else {
+        setCommands([{
+          input: trimmedInput,
+          output: `File '${file}' not found. Type 'help' for available files.`
+        }]);
+      }
+      setCurrentInput('');
+      return;
+    }
+
+    // Handle cd command
+    if (trimmedInput.startsWith('cd ')) {
+      const directory = trimmedInput.slice(3).toLowerCase();
+      const targetSection = AVAILABLE_DIRECTORIES[directory];
+      
+      if (targetSection) {
+        const success = scrollToSection(targetSection);
+        setCommands([{
+          input: trimmedInput,
+          output: success ? `Navigating to ${directory}...` : `Error: Could not navigate to ${directory}`
+        }]);
+      } else {
+        setCommands([{
+          input: trimmedInput,
+          output: `Available directories: ${Object.keys(AVAILABLE_DIRECTORIES).join(', ')}`
+        }]);
+      }
+    } else {
+      setCommands([{
+        input: trimmedInput,
+        output: `Command '${trimmedInput}' not found. Type 'help' for available commands.`
+      }]);
+    }
+    
+    setCurrentInput('');
+    setSuggestion('');
+  };
+
+  const handleInputChange = (input: string) => {
+    setCurrentInput(input);
+    
+    // Handle autocomplete for cd command
+    if (input.startsWith('cd ')) {
+      const partial = input.slice(3).toLowerCase();
+      const match = Object.keys(AVAILABLE_DIRECTORIES).find(dir => 
+        dir.startsWith(partial) && dir !== partial
+      );
+      
+      if (match) {
+        setSuggestion(match.slice(partial.length));
+      } else {
+        setSuggestion('');
+      }
+    }
+    // Handle autocomplete for nvim command
+    else if (input.startsWith('nvim ')) {
+      const partial = input.slice(5).toLowerCase();
+      const match = Object.keys(AVAILABLE_FILES).find(file => 
+        file.startsWith(partial) && file !== partial
+      );
+      
+      if (match) {
+        setSuggestion(match.slice(partial.length));
+      } else {
+        setSuggestion('');
+      }
+    } else {
+      setSuggestion('');
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Handle ESC key for modal
+    if (e.key === 'Escape' && isContactModalOpen) {
+      handleModalClose();
+      return;
+    }
+    
     if (e.key === 'Enter') {
-      e.preventDefault();
-      processCommand(currentInput);
-      setCurrentInput('');
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
-        const newIndex = historyIndex + 1;
-        setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      handleCommand(currentInput);
+    } else if (e.key === 'Tab' && suggestion) {
+      if (currentInput.startsWith('cd ')) {
+        setCurrentInput('cd ' + currentInput.slice(3) + suggestion);
+      } else if (currentInput.startsWith('nvim ')) {
+        setCurrentInput('nvim ' + currentInput.slice(5) + suggestion);
       }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (historyIndex > 0) {
-        const newIndex = historyIndex - 1;
-        setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
-      } else if (historyIndex === 0) {
-        setHistoryIndex(-1);
-        setCurrentInput('');
-      }
+      setSuggestion('');
+    } else if (e.key === 'Backspace') {
+      handleInputChange(currentInput.slice(0, -1));
+    } else if (e.key.length === 1) {
+      handleInputChange(currentInput + e.key);
     }
   };
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isContactModalOpen) {
+        handleModalClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [isContactModalOpen]);
+
+  const handleModalClose = () => {
+    setIsContactModalOpen(false);
+    setCommands([{
+      input: '',
+      output: 'Contact form closed.'
+    }]);
+  };
 
   return (
-    <div 
-      ref={terminalRef}
-      style={{
-        width: '100%',
-        height: '400px',
-        backgroundColor: '#1e1e1e',
-        color: '#fff',
-        fontFamily: 'monospace',
-        fontSize: '14px',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        border: '1px solid #333'
-      }}
-    >
-      <div 
+    <>
+      <Canvas
+        camera={{ position: [3, 0, 5], fov: 45 }}
         style={{ 
-          flexGrow: 1, 
-          overflowY: 'auto',
-          padding: '20px',
-          paddingBottom: '50px'
+          width: '600px', 
+          height: '400px',
+          outline: 'none',
+          position: 'absolute',
+          right: '-100px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 10
         }}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
       >
-        {commands.map((cmd, i) => (
-          <div key={i}>
-            <div style={{ color: '#00ff00' }}>visitor@portfolio:~$ {cmd.input}</div>
-            {cmd.output && (
-              <div style={{ whiteSpace: 'pre-wrap', marginBottom: '10px' }}>
-                {cmd.output}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      <div 
-        style={{ 
-          display: 'flex', 
-          alignItems: 'center',
-          padding: '10px 20px',
-          borderTop: '1px solid #333'
-        }}
-      >
-        <span style={{ color: '#00ff00', marginRight: '8px' }}>
-          visitor@portfolio:~$
-        </span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={currentInput}
-          onChange={(e) => setCurrentInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#fff',
-            fontFamily: 'monospace',
-            fontSize: '14px',
-            outline: 'none',
-            width: '100%',
-            padding: '5px 0'
-          }}
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        
+        <TerminalScreen 
+          commands={commands}
+          currentInput={currentInput}
+          suggestion={suggestion}
         />
-      </div>
-    </div>
+        
+        <OrbitControls
+          enableZoom={false}
+          minAzimuthAngle={-Math.PI / 12}  
+          maxAzimuthAngle={Math.PI / 12}   
+          minPolarAngle={Math.PI / 2}      
+          maxPolarAngle={Math.PI / 2}      
+          enablePan={false}
+        />
+      </Canvas>
+      
+      <ContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={handleModalClose}
+      />
+    </>
   );
 };
 
