@@ -18,10 +18,10 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-4">
               <p className="text-gray-600 leading-relaxed">
-                I'm a passionate developer with a keen interest in building beautiful and functional web applications. With experience in both frontend and backend development, I love turning complex problems into simple, beautiful, and intuitive solutions.
+                I&apos;m a passionate developer with a keen interest in building beautiful and functional web applications. With experience in both frontend and backend development, I love turning complex problems into simple, beautiful, and intuitive solutions.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge through blog posts and mentoring.
+                When I&apos;m not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge through blog posts and mentoring.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
