@@ -18,7 +18,7 @@ const Hero = () => {
               Hi, I&apos;m <span className="text-blue-600">Arsim Ajvazi</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8">
-              Full Stack Developer | UI/UX Enthusiast | Problem Solver
+              Software Engineer
             </p>
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
               <a
