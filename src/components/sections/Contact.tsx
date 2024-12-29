@@ -25,7 +25,7 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
             Get In Touch
           </h2>
           <div className="max-w-xl mx-auto">

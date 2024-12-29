@@ -12,7 +12,7 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
             About Me
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -26,19 +26,19 @@ const About = () => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Frontend</h3>
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Frontend</h3>
                 <p className="text-gray-600">React, Next.js, TypeScript, Tailwind CSS</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Backend</h3>
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Backend</h3>
                 <p className="text-gray-600">Node.js, Python, PostgreSQL, MongoDB</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Tools</h3>
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Tools</h3>
                 <p className="text-gray-600">Git, Docker, AWS, Vercel</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Soft Skills</h3>
+                <h3 className="font-bold text-lg mb-2 text-gray-900">Soft Skills</h3>
                 <p className="text-gray-600">Communication, Team Leadership, Problem Solving</p>
               </div>
             </div>

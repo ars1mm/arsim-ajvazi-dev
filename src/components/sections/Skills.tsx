@@ -35,7 +35,7 @@ const Skills = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
             Skills & Technologies
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -48,7 +48,7 @@ const Skills = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white p-6 rounded-lg shadow-lg"
               >
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">
                   {skillGroup.category}
                 </h3>
                 <ul className="space-y-2">
