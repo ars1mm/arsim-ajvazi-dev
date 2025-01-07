@@ -90,7 +90,7 @@ const Hero = () => {
           </motion.div>
           <div 
             ref={terminalContainerRef}
-            className="relative h-[400px] w-full lg:w-[500px] mx-auto"
+            className="relative h-[400px] w-full lg:w-[500px] mx-auto hidden lg:block"
           >
             {isClient && (
               <Terminal />
