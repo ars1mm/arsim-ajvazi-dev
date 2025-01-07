@@ -33,11 +33,11 @@ const Navbar = () => {
             <a href="#about-section" onClick={(e) => handleClick(e, 'about-section')} className="text-gray-300 hover:text-white transition-colors cursor-pointer">
               About
             </a>
-            <a href="#projects-section" onClick={(e) => handleClick(e, 'projects-section')} className="text-gray-300 hover:text-white transition-colors cursor-pointer">
-              Projects
-            </a>
             <a href="#skills-section" onClick={(e) => handleClick(e, 'skills-section')} className="text-gray-300 hover:text-white transition-colors cursor-pointer">
               Skills
+            </a>
+            <a href="#projects-section" onClick={(e) => handleClick(e, 'projects-section')} className="text-gray-300 hover:text-white transition-colors cursor-pointer">
+              Projects
             </a>
             <a href="#contact-section" onClick={(e) => handleClick(e, 'contact-section')} className="text-gray-300 hover:text-white transition-colors cursor-pointer">
               Contact
