@@ -71,12 +71,10 @@ const DrawingBackground = () => {
         </div>
 
         {/* Animated clouds */}
-        <div className="relative w-full h-full">
-          <Cloud yPosition={15} delay={0} scale={1.2} />
-          <Cloud yPosition={25} delay={-3} scale={0.9} />
-          <Cloud yPosition={10} delay={-6} scale={1} />
-          <Cloud yPosition={30} delay={-9} scale={1.1} />
-          <Cloud yPosition={20} delay={-12} scale={0.8} />
+        <div className="relative w-full h-full overflow-hidden">
+          <Cloud delay={0} yPosition={15} scale={0.8} />
+          <Cloud delay={5} yPosition={25} scale={1.2} />
+          <Cloud delay={2} yPosition={35} scale={0.9} />
         </div>
 
         {/* Grass field */}

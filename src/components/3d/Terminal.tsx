@@ -362,39 +362,36 @@ const Terminal: React.FC = () => {
 
   return (
     <>
-      <Canvas
-        camera={{ position: [3, 0, 5], fov: 45 }}
-        style={{ 
-          width: '600px', 
-          height: '400px',
-          outline: 'none',
-          position: 'absolute',
-          right: '-100px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 10
-        }}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-      >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        
-        <TerminalScreen 
-          commands={commands}
-          currentInput={currentInput}
-          suggestion={suggestion}
-        />
-        
-        <OrbitControls
-          enableZoom={false}
-          minAzimuthAngle={-Math.PI / 12}  
-          maxAzimuthAngle={Math.PI / 12}   
-          minPolarAngle={Math.PI / 2}      
-          maxPolarAngle={Math.PI / 2}      
-          enablePan={false}
-        />
-      </Canvas>
+      <div className="w-full h-full relative">
+        <Canvas
+          camera={{ position: [3, 0, 5], fov: 45 }}
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            outline: 'none'
+          }}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+        >
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+          
+          <TerminalScreen 
+            commands={commands}
+            currentInput={currentInput}
+            suggestion={suggestion}
+          />
+          
+          <OrbitControls
+            enableZoom={false}
+            minAzimuthAngle={-Math.PI / 12}  
+            maxAzimuthAngle={Math.PI / 12}   
+            minPolarAngle={Math.PI / 2}      
+            maxPolarAngle={Math.PI / 2}      
+            enablePan={false}
+          />
+        </Canvas>
+      </div>
       
       <ContactModal 
         isOpen={isContactModalOpen} 

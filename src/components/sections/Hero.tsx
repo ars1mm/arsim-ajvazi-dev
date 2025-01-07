@@ -47,9 +47,9 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden w-full">
       <DrawingBackground />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative w-full">
+      <div className="container mx-auto px-4 relative w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ const Hero = () => {
           </motion.div>
           <div 
             ref={terminalContainerRef}
-            className="relative h-[400px] w-full lg:w-[500px] mx-auto hidden lg:block"
+            className="relative h-[400px] w-full max-w-[500px] mx-auto hidden lg:block overflow-hidden"
           >
             {isClient && (
               <Terminal />
