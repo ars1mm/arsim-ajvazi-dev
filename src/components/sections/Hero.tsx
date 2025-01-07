@@ -4,11 +4,52 @@ import { motion } from 'framer-motion';
 import Terminal from '@/components/3d/Terminal';
 import ProfilePicture from './ProfilePicture';
 import ContactModal from '@/components/modals/ContactModal';
+import DrawingBackground from '@/components/backgrounds/DrawingBackground';
+import { useEffect, useState, useRef } from 'react';
 
 const Hero = () => {
+  const [isClient, setIsClient] = useState(false);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    setIsClient(true);
+
+    const updateDimensions = () => {
+      if (terminalContainerRef.current) {
+        const { width, height } = terminalContainerRef.current.getBoundingClientRect();
+        setDimensions({ width, height });
+      }
+    };
+
+    // Initial update
+    updateDimensions();
+
+    // Create observer
+    const observer = new ResizeObserver(updateDimensions);
+    if (terminalContainerRef.current) {
+      observer.observe(terminalContainerRef.current);
+    }
+
+    // Update on scroll
+    window.addEventListener('scroll', updateDimensions);
+    
+    // Force multiple updates to ensure proper sizing
+    const timeouts = [100, 500, 1000].map(delay => 
+      setTimeout(updateDimensions, delay)
+    );
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', updateDimensions);
+      timeouts.forEach(clearTimeout);
+    };
+  }, []);
+
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section className="min-h-screen flex items-center justify-center relative">
+      <DrawingBackground />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -44,37 +85,17 @@ const Hero = () => {
                 >
                   View My Work
                 </motion.a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const contactModal = document.getElementById('contact-modal');
-                    if (contactModal) {
-                      contactModal.classList.remove('hidden');
-                    }
-                  }}
-                  className="border-2 border-gray-800 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  Contact Me
-                </button>
-                <div className="hidden" id="contact-modal">
-                  <ContactModal isOpen={true} onClose={() => {
-                    const contactModal = document.getElementById('contact-modal');
-                    if (contactModal) {
-                      contactModal.classList.add('hidden');
-                    }
-                  }} />
-                </div>
               </div>
             </div>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative w-full h-[600px] hidden lg:block"
+          <div 
+            ref={terminalContainerRef}
+            className="relative h-[400px] w-full lg:w-[500px] mx-auto"
           >
-            <Terminal />
-          </motion.div>
+            {isClient && (
+              <Terminal />
+            )}
+          </div>
         </div>
       </div>
     </section>
