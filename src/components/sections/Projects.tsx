@@ -24,6 +24,7 @@ const Projects = () => {
       setIsDragging(true);
       setStartX(e.pageX - containerRef.current.offsetLeft);
       setScrollLeft(containerRef.current.scrollLeft);
+      containerRef.current.style.scrollBehavior = 'auto';
     }
   };
 
@@ -32,17 +33,23 @@ const Projects = () => {
     e.preventDefault();
     if (containerRef.current) {
       const x = e.pageX - containerRef.current.offsetLeft;
-      const walk = (x - startX) * 2;
+      const walk = (x - startX) * 1.5; 
       containerRef.current.scrollLeft = scrollLeft - walk;
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    if (containerRef.current) {
+      containerRef.current.style.scrollBehavior = 'smooth';
+    }
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    if (containerRef.current) {
+      containerRef.current.style.scrollBehavior = 'smooth';
+    }
   };
 
   return (
@@ -62,12 +69,16 @@ const Projects = () => {
           <div className="relative w-full">
             <div 
               ref={containerRef}
-              className="overflow-x-auto pb-8 hide-scrollbar select-none w-full"
+              className="overflow-x-auto pb-8 hide-scrollbar select-none w-full scroll-smooth"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseLeave}
-              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+              style={{ 
+                cursor: isDragging ? 'grabbing' : 'grab',
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch'
+              }}
             >
               <div 
                 className="flex space-x-8 pl-8 pr-8" 
