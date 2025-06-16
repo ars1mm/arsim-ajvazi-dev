@@ -1,10 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import ProfilePicture from './ProfilePicture';
 import ContactModal from '@/components/modals/ContactModal';
 import Web3SpotifyBackground from '@/components/backgrounds/Web3SpotifyBackground';
 import { useEffect, useState } from 'react';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Hero = () => {
   const [isClient, setIsClient] = useState(false);
@@ -24,15 +24,10 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="w-full"
-          >
-            <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-              <div className="scale-90 sm:scale-100">
-                <ProfilePicture />
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+          >            <div className="flex flex-col items-center space-y-4 sm:space-y-6">              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2">
                 Hi, I'm <span className="text-spotify-green">Arsim Ajvazi</span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-2">
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-4">
                Software Engineer
               </p>
 

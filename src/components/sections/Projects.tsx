@@ -33,7 +33,7 @@ const Projects = () => {
     e.preventDefault();
     if (containerRef.current) {
       const x = e.pageX - containerRef.current.offsetLeft;
-      const walk = (x - startX) * 1.5; 
+      const walk = (x - startX) * 1.5;
       containerRef.current.scrollLeft = scrollLeft - walk;
     }
   };
@@ -56,7 +56,7 @@ const Projects = () => {
     <section id="projects-section" className="py-20 relative z-20 w-screen overflow-hidden bg-gray-900">
       {/* Simple subtle background instead of complex animated gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black opacity-50"></div>
-        <div className="container mx-auto px-4 relative">
+      <div className="container mx-auto px-4 relative">
         <div>
           <div className="flex flex-col items-center mb-12">
             <div className="inline-block px-6 py-2 rounded-full bg-web3-blue text-white text-sm font-medium mb-4">
@@ -69,26 +69,26 @@ const Projects = () => {
               Explore some of my recent work that showcases my skills and passion for building great digital experiences
             </p>
           </div>
-          
+
           <div className="relative w-full">
-            <div 
+            <div
               ref={containerRef}
               className="overflow-x-auto pb-12 hide-scrollbar select-none w-full scroll-smooth"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseLeave}
-              style={{ 
+              style={{
                 cursor: isDragging ? 'grabbing' : 'grab',
                 scrollBehavior: 'smooth',
                 WebkitOverflowScrolling: 'touch'
               }}
-            >              <div 
-                className="flex space-x-6 pl-8 pr-8" 
-                style={{ width: "max-content" }}
-              >
+            >              <div
+              className="flex space-x-6 pl-8 pr-8"
+              style={{ width: "max-content" }}
+            >
                 {projects.map((project, index) => (
-                  <div                    key={index}
+                  <div key={index}
                     className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex-shrink-0 flex flex-col"
                     style={{ width: "min(400px, 80vw)" }}
                   >
@@ -103,7 +103,7 @@ const Projects = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-800"></div>
                     </div>
-                    
+
                     <div className="p-5 flex flex-col flex-grow relative z-10">
                       <h3 className="text-xl font-bold mb-2 text-white">
                         {project.title}
@@ -113,28 +113,27 @@ const Projects = () => {
                           {project.description}
                         </p>
                       </div>
-                        <div className="flex flex-wrap gap-1 mb-3">
-                        {project.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {project.tags.slice(0, 5).map((tag, tagIndex) => (
                           <span
                             key={tagIndex}
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                              tagIndex % 2 === 0 ? 'bg-blue-900 text-blue-100' : 
-                              'bg-green-900 text-green-100'
-                            }`}
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${tagIndex % 2 === 0 ? 'bg-blue-900 text-blue-100' :
+                                'bg-green-900 text-green-100'
+                              }`}
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
-                      
+
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-2 bg-web3-blue text-white px-4 py-1.5 rounded-md hover:bg-spotify-green transition-colors text-sm"
                       >
-                        {project.link.includes('github') ? 
-                          <><FaGithub className="text-xs" /> View on GitHub</> : 
+                        {project.link.includes('github') ?
+                          <><FaGithub className="text-xs" /> View on GitHub</> :
                           <><FaExternalLinkAlt className="text-xs" /> View Live</>
                         }
                       </a>
@@ -143,11 +142,11 @@ const Projects = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Simple dots for pagination */}
             <div className="flex justify-center mt-8 gap-2">
               {Array.from({ length: Math.min(4, projects.length) }).map((_, i) => (
-                <div 
+                <div
                   key={i}
                   className="h-1 w-4 rounded-full bg-gray-600"
                 ></div>

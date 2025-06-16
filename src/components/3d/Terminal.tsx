@@ -54,15 +54,16 @@ const COMMANDS = {
 };
 
 const getHelpText = () => {
-  const commandsList = Object.values(COMMANDS)
-    .map(cmd => `${cmd.name}\t\t${cmd.description}`)
-    .join('\n');
-  
-  const sectionsText = `\nAvailable sections:\n${Object.keys(AVAILABLE_DIRECTORIES)
-    .map(dir => `  - ${dir}`)
-    .join('\n')}`;
+  return `How to use this terminal:
 
-  return `Available commands:\n${commandsList}${sectionsText}`;
+Type 'cd <section>' to navigate to different parts of the portfolio:
+  - cd about       → Go to About section
+  - cd projects    → Go to Projects section  
+  - cd contact     → Go to Contact section
+  - cd home        → Go to Hero section
+
+Type 'nvim contact-me' to open the contact form
+Type 'clear' to clear the terminal screen`;
 };
 
 const WindowControls = () => {
@@ -270,10 +271,9 @@ const Terminal: React.FC = () => {
           output: `Available directories: ${Object.keys(AVAILABLE_DIRECTORIES).join(', ')}`
         }]);
       }
-    } else {
-      setCommands([{
+    } else {      setCommands([{
         input: trimmedInput,
-        output: `Command '${trimmedInput}' not found. Type 'help' for available commands.`
+        output: `Command '${trimmedInput}' not found. Type 'help' for usage instructions.`
       }]);
     }
     
