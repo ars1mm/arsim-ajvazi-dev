@@ -96,7 +96,6 @@ const TerminalScreen: React.FC<{
       meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
     }
   });
-
   return (
     <RoundedBox 
       ref={meshRef}

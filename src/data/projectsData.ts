@@ -7,46 +7,34 @@ interface Project {
 }
 
 export const projects: Project[] = [
+
   {
-    title: "Netflix Clone",
-    description: "A full-stack application built with React and Firebase",
-    tags: ["React", "Firebase", "Tailwind CSS"],
-    image: "/images/projects/netflix-clone.jpg",
-    link: "https://github.com/ars1mm/netflix-app"
+    title: "BehindLink",
+    description: "A Software as a Service platform for link management that provides secure navigation and detailed analytics. Features include link shortening, click tracking, and real-time data for premium users.",
+    tags: ["Next.js", "Tailwind CSS", "MongoDB", "Spring Boot", "Java", "AWS"],
+    image: "/images/projects/netflix-clone.jpg", // Consider replacing with appropriate image
+    link: "https://behindlink.vercel.app/"
   },
+
   {
-    title: "Spotify Clone",
-    description: "Spotify clone using React and Tailwind CSS",
-    tags: ["React", "Tailwind CSS"],
-    image: "/images/projects/spotfiy-clone.jpg",
-    link: "https://github.com/ars1mm/spotify-clone"
-  },
-  {
-    title: "Hotel Reservation Form",
-    description: "Hotel reservation in C# Windows Forms",
-    tags: ["C#", "Windows Forms"],
+    title: "Hotel Reservation System",
+    description: "A desktop application for managing hotel bookings, room availability, and customer information with an intuitive interface and database integration.",
+    tags: ["C#", "Windows Forms", ".NET Framework"],
     image: "/images/projects/hotel_reservation.jpg",
     link: "https://github.com/ars1mm/hotel-reservation"
   },
   {
-    title: "EasyUI",
-    description: "Open Source Library for UI Built on C",
-    tags: ["C","Open Source"],
-    image: "/images/projects/netflix-clone.jpg",
-    link: "#"
-  },
-  {
-    title: "Weather App",
-    description: "Real-time weather forecasting application",
-    tags: ["JavaScript", "Weather API", "CSS"],
-    image: "/images/projects/spotfiy-clone.jpg",
-    link: "#"
-  },
-  {
     title: "Task Manager",
-    description: "Personal task management application with reminders",
+    description: "A personal productivity tool for organizing tasks with priority levels, due dates, and automated reminder notifications to help users stay on track.",
     tags: ["React", "Redux", "Firebase"],
-    image: "/images/projects/hotel_reservation.jpg",
-    link: "#"
-  }
+    image: "/images/projects/hotel_reservation.jpg", // Consider replacing with appropriate image
+    link: "#" // Consider updating with actual link when available
+  },
+  {
+    title: "Chatbot for Medical Use",
+    description: "Built a chatbot ###",
+    tags: ["Machine Learning","Natural Language Processing"],
+    image: "/images/projects/spotfiy-clone.jpg",
+    link: "#",
+  },
 ];
